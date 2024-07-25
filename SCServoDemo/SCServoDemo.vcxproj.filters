@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="examples">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="examples\SMSBL">
+      <UniqueIdentifier>{209b838b-eddd-4db0-b3ce-03214097c5df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SCServo">
+      <UniqueIdentifier>{5f490114-62be-4ebe-9909-1bd5b144f1a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{a7c16e1c-0fdf-4224-ad8a-a3529832d84b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>examples</Filter>
+    </ClCompile>
+    <ClCompile Include="SCServo\SCComm.cpp">
+      <Filter>SCServo</Filter>
+    </ClCompile>
+    <ClCompile Include="SCServo\SCS.cpp">
+      <Filter>SCServo</Filter>
+    </ClCompile>
+    <ClCompile Include="SCServo\SCSCL.cpp">
+      <Filter>SCServo</Filter>
+    </ClCompile>
+    <ClCompile Include="SCServo\SCSerial.cpp">
+      <Filter>SCServo</Filter>
+    </ClCompile>
+    <ClCompile Include="SCServo\SMSBL.cpp">
+      <Filter>SCServo</Filter>
+    </ClCompile>
+    <ClCompile Include="SCServo\SMSCL.cpp">
+      <Filter>SCServo</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>examples\SMSBL</Filter>
+    </ClCompile>
+    <ClCompile Include="examples\SMSBL\InitProgram_Tabl.cpp">
+      <Filter>examples\SMSBL</Filter>
+    </ClCompile>
+    <ClCompile Include="examples\SMSBL\SCSControl.cpp">
+      <Filter>examples\SMSBL</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>examples</Filter>
+    </ClInclude>
+    <ClInclude Include="SCServo\INST.h">
+      <Filter>SCServo</Filter>
+    </ClInclude>
+    <ClInclude Include="SCServo\SCComm.h">
+      <Filter>SCServo</Filter>
+    </ClInclude>
+    <ClInclude Include="SCServo\SCS.h">
+      <Filter>SCServo</Filter>
+    </ClInclude>
+    <ClInclude Include="SCServo\SCSCL.h">
+      <Filter>SCServo</Filter>
+    </ClInclude>
+    <ClInclude Include="SCServo\SCSerial.h">
+      <Filter>SCServo</Filter>
+    </ClInclude>
+    <ClInclude Include="SCServo\SCServo.h">
+      <Filter>SCServo</Filter>
+    </ClInclude>
+    <ClInclude Include="SCServo\SMSBL.h">
+      <Filter>SCServo</Filter>
+    </ClInclude>
+    <ClInclude Include="SCServo\SMSCL.h">
+      <Filter>SCServo</Filter>
+    </ClInclude>
+    <ClInclude Include="include\config.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SCSControl.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

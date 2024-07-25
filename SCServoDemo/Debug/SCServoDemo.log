@@ -1,0 +1,13 @@
+﻿cl : 命令行  warning D9035: “Gm”选项已否决，并将在将来的版本中移除
+  main.cpp
+E:\Learn\Work\SCServoSDK-master\SCServoDemo_vs_2008_200724\SCServoDemoyuan\SCServoDemo\main.cpp(282,39): warning C4244: “参数”: 从“u16”转换到“u8”，可能丢失数据
+E:\Learn\Work\SCServoSDK-master\SCServoDemo_vs_2008_200724\SCServoDemoyuan\SCServoDemo\main.cpp(283,63): warning C4244: “参数”: 从“u16”转换到“u8”，可能丢失数据
+E:\Learn\Work\SCServoSDK-master\SCServoDemo_vs_2008_200724\SCServoDemoyuan\SCServoDemo\main.cpp(283,53): warning C4244: “参数”: 从“u16”转换到“u8”，可能丢失数据
+E:\Learn\Work\SCServoSDK-master\SCServoDemo_vs_2008_200724\SCServoDemoyuan\SCServoDemo\main.cpp(283,43): warning C4244: “参数”: 从“u16”转换到“u8”，可能丢失数据
+E:\Learn\Work\SCServoSDK-master\SCServoDemo_vs_2008_200724\SCServoDemoyuan\SCServoDemo\main.cpp(289,36): warning C4244: “参数”: 从“u16”转换到“u8”，可能丢失数据
+  正在生成代码...
+  正在跳过...(未检测到相关更改)
+  SCSControl.cpp
+  InitProgram_Tabl.cpp
+SCSControl.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/SAFESEH”规范)
+  SCServoDemo.vcxproj -> E:\Learn\Work\SCServoSDK-master\SCServoDemo_vs_2008_200724\SCServoDemoyuan\SCServoDemo\Debug\SCServoDemo.exe
