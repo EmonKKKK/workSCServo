@@ -66,7 +66,6 @@ void getMovePosAndSpeed(double da, double db, double dga, double dth, double dti
     movePos[17] = result[0];
     movePos[15] = result[1];
     movePos[19] = result[2];
-
     movePos[16] = -result[3];
     movePos[18] = -result[4];
 
@@ -126,3 +125,4 @@ void getMovePosAndSpeed(double da, double db, double dga, double dth, double dti
 
 
 }
+

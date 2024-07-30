@@ -99,6 +99,8 @@ public:
 	virtual int WriteSpeed(u8 ID, u16 Speed);//设置速度
 	virtual int WritePositon(u8 ID, u16 Position);//设置位移
 	virtual int ReadIsMove(int ID);//读移动标志
+	virtual void SynCalibrationOfs(u8 ID[], u8 IDN);//同步中位校准
+	virtual void SynWritePositon(u8 ID[], u8 IDN, u16 Position[]);//同步写位置
 
 private:
 	u8 Mem[SMSBL_PRESENT_CURRENT_H-SMSBL_PRESENT_POSITION_L+1];

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "config.h"
-
+#include <sstream>
 using namespace std;
 
 
@@ -10,6 +10,9 @@ using namespace std;
 #define TAR_POS     3072
 #define TAR_SPEED   2000
 
+#define ROWS 43
+#define COLS 4
+int targetAngle[ROWS][COLS];
 
 
 u16 param[128] = { 0 };
@@ -21,60 +24,60 @@ int CurrentLoad[20] = { 0 };
 int CurrentPos[20] = { 0 };
 
 int angle[4] = { 0 };
-int targetAngle[43][4] = {
-
-      {0,0,0,0},
-    {30,30,0,0},
-    {60,60,0,0},
-    {80,100,0,0},
-     {60,60,0,0},
-     {30,30,0,0},
-      {0,0,0,0},
-       {0,0,0,0},
-       {0,0,0,0},
-
-     {0,0,0,0},
-    {20,0,0,0},
-    {40,0,0,0},
-    {70,0,0,0},
-    {40,0,0,0},
-    {0,0,0,0},
-   
-
-     {0,0,0,0},
-    {0,30,0,0},
-    {0,70,0,0},
-    {0,110,0,0},
-    {0,70,0,0},
-    {0,30,0,0},
-    {0,0,0,0},
-    
-
-    {0,0,0,0},
-    {0,0,30,0},
-    {0,0,60,0},
-    {0,0,90,0},
-    {0,0,120,0},
-    {0,0,90,0},
-    {0,0,60,0},
-    {0,0,30,0},
-    {0,0,0,0},
-    
-
-
-    {0,0,0,10},
-    {0,0,0,20},
-    {0,0,0,30},
-    {0,0,0,20},
-    {0,0,0,10},
-    {0,0,0,0},
-    {0,0,0,-10},
-    {0,0,0,-20},
-    {0,0,0,-30},
-    {0,0,0,-20},
-    {0,0,0,-10},
-     {0,0,0,0}
-};
+//int targetAngle[43][4] = {
+//
+//      {0,0,0,0},
+//    {30,30,0,0},
+//    {60,60,0,0},
+//    {80,100,0,0},
+//     {60,60,0,0},
+//     {30,30,0,0},
+//      {0,0,0,0},
+//       {0,0,0,0},
+//       {0,0,0,0},
+//
+//     {0,0,0,0},
+//    {20,0,0,0},
+//    {40,0,0,0},
+//    {70,0,0,0},
+//    {40,0,0,0},
+//    {0,0,0,0},
+//   
+//
+//     {0,0,0,0},
+//    {0,30,0,0},
+//    {0,70,0,0},
+//    {0,110,0,0},
+//    {0,70,0,0},
+//    {0,30,0,0},
+//    {0,0,0,0},
+//    
+//
+//    {0,0,0,0},
+//    {0,0,30,0},
+//    {0,0,60,0},
+//    {0,0,90,0},
+//    {0,0,120,0},
+//    {0,0,90,0},
+//    {0,0,60,0},
+//    {0,0,30,0},
+//    {0,0,0,0},
+//    
+//
+//
+//    {0,0,0,10},
+//    {0,0,0,20},
+//    {0,0,0,30},
+//    {0,0,0,20},
+//    {0,0,0,10},
+//    {0,0,0,0},
+//    {0,0,0,-10},
+//    {0,0,0,-20},
+//    {0,0,0,-30},
+//    {0,0,0,-20},
+//    {0,0,0,-10},
+//     {0,0,0,0}
+//};
 SMSBL sm;
 std::atomic<bool> stopFlag(false);
 std::condition_variable cv;
@@ -90,11 +93,7 @@ int step = 0;
 int Ftime = 20;
 bool increasing = true; // 初始状态为增加速度
 
-
-
-
-
-
+void readTargetAnglesFromFile(const std::string& filename);
 
 //void getMovePosAndSpeed(double da, double db, double dga, double dth,double dtime)
 //{
@@ -222,9 +221,6 @@ bool increasing = true; // 初始状态为增加速度
 //
 //}
 
-
-
-
 void high_resolution_sleep(std::chrono::milliseconds duration) {
     auto start = std::chrono::high_resolution_clock::now();
     auto end = start + duration;
@@ -239,20 +235,16 @@ int ReadSpeed(int ID) {
 
     return Speed;
 }
-
 int ReadLoad(int ID) {
     int Load;
     Load = sm.ReadLoad(ID);
     return Load;
 }
-
 int ReadPos(int ID) {
     int Pos;
     Pos = sm.ReadPos(ID);
     return Pos;
 }
-
-
 int ReadTemper(int ID) {
     int Temper;
     Temper = sm.ReadTemper(ID);
@@ -262,7 +254,18 @@ int ReadTemper(int ID) {
 void motorControl(std::ofstream& outFile) {
 
 
+    int Count = 0;
+    u8 ID[MOTOR_NUM] = { 15,16,17,18,19 };
+    u16 moveSpeed15_19[MOTOR_NUM] = { 0 };
+    s16 movePos15_19[MOTOR_NUM] = { 0 };
+    bool firstTimeConditionMet = false;
+    auto startTime = std::chrono::high_resolution_clock::now();
+
+
+
     Init_program_table();//初始化列表
+
+
     for (int i = 0; i < MOTOR_NUM; i++)//测试串口通信
     {
         std::cout << "ID"<< i+15 << " Position:" << sm.ReadPos(i+15) << std::endl;
@@ -272,20 +275,11 @@ void motorControl(std::ofstream& outFile) {
     {
         sm.unLockEprom(i+15);//eprom解锁
 
-
-
-
-
        sm.CalibrationOfs(i + 15);////中位校准
         sm.AngleLimit(i + 15,param[0],param[1]);//配置角度限制
         sm.MaxLoad(i + 15, param[2]);//最大扭矩
         sm.SetRunMode(i + 15, param[03]);//运行模式
         sm.OverLoadProtect(i + 15, param[4], param[5], param[6]);//设置 保护扭矩 保护时间 过载扭矩
-
-
-
-
-
         sm.WriteAcc(i + 15, param[7]);//配置加速度
         sm.WriteSpeed(i + 15, param[8]);//配置速度
         //sm.WritePositon(i + 15,2048); //设置目标位置
@@ -293,7 +287,6 @@ void motorControl(std::ofstream& outFile) {
         sm.LockEprom(i + 15);//eprom加锁
 
     }
-
 
     sm.WritePositon(15, 2048 - 300);
     sm.WritePositon(17, 2048 - 200);
@@ -309,18 +302,13 @@ void motorControl(std::ofstream& outFile) {
     sm.CalibrationOfs(18);////中位校准
     sm.CalibrationOfs(19);////中位校准
 
+    sm.SynCalibrationOfs(ID, MOTOR_NUM);
+
     std::cout << "电机初始化完成" << std::endl;
 
 
 
 
-    int Count = 0;
-
-    u8 ID[MOTOR_NUM] = { 15,16,17,18,19 };
-    u16 moveSpeed15_19[MOTOR_NUM] = { 0 };
-    s16 movePos15_19[MOTOR_NUM] = { 0 };
-    bool firstTimeConditionMet = false;
-    auto startTime = std::chrono::high_resolution_clock::now();
     while ((Count < 10) && (!stopFlag)) { //!stopFlag
         auto LastTime = std::chrono::high_resolution_clock::now();
         if (step == 0) {
@@ -420,6 +408,28 @@ void waitForKeypress() {
 int main(int argc, char** argv)
 {
 
+
+
+
+    readTargetAnglesFromFile("target_angles.txt");
+    // 输出读取的数据以验证
+    for (int i = 0; i < ROWS; ++i) {
+        for (int j = 0; j < COLS; ++j) {
+            std::cout << targetAngle[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    //return 0;
+
+
+
+
+
+
+
+
+
     const char* serialPort = "COM4";
 
     if (argc < 2) {
@@ -452,4 +462,36 @@ int main(int argc, char** argv)
     sm.end();
     outFile.close();
     return 1;
+}
+
+
+
+
+
+void readTargetAnglesFromFile(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+        return;
+    }
+
+    std::string line;
+    int row = 0;
+
+    while (std::getline(file, line) && row < ROWS) {
+        std::istringstream iss(line);
+        for (int col = 0; col < COLS; ++col) {
+            if (!(iss >> targetAngle[row][col])) {
+                std::cerr << "Error reading data at row " << row << ", column " << col << std::endl;
+                return;
+            }
+        }
+        ++row;
+    }
+
+    if (row < ROWS) {
+        std::cerr << "File does not contain enough rows. Expected: " << ROWS << ", found: " << row << std::endl;
+    }
+
+    file.close();
 }

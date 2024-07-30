@@ -329,3 +329,30 @@ int SMSBL::ReadIsMove(int ID)
 }
 
 
+void SMSBL::SynCalibrationOfs(u8 ID[], u8 IDN)
+{
+	u8 offbuf[32];
+	for (u8 i = 0; i < IDN; i++) {
+		offbuf[i] = 128;
+	}
+	snycWrite(ID, IDN, SMSBL_TORQUE_ENABLE, (u8*)offbuf, 1);
+
+}
+
+void SMSBL::SynWritePositon(u8 ID[], u8 IDN, u16 Position[])
+{
+	u8 offbuf[32][2];
+	u8 bBuf[2];
+
+	for (u8 i = 0; i < IDN; i++) {
+
+		if (Position[i] < 0) {
+			Position[i] = -Position[i];
+			Position[i] |= (1 << 15);
+		}
+		Host2SCS(bBuf + 0, bBuf + 1, Position[i]);
+		memcpy(offbuf[i], bBuf, 2);
+	}
+	snycWrite(ID, IDN, SMSBL_GOAL_POSITION_L, (u8*)offbuf, 2);
+
+}

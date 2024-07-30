@@ -4,10 +4,8 @@
 
 #include "config.h"
 
-
-
-
 void getMovePosAndSpeed(double da, double db, double dga, double dth, double dtime);
+
 
 extern s16 movePos[20];
 extern u16 moveSpeed[20];
